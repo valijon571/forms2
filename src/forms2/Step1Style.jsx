@@ -4,7 +4,7 @@ export const Step1Style = styled.div`
   & .contenr {
     border-radius: 20px;
     display: flex;
-    margin-top: 25px;
+    margin-top: 60px;
     justify-content: center;
     & .chakra-modal__body {
       border-radius: 20px;
