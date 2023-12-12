@@ -1,63 +1,148 @@
 import React from "react";
+import axios from "axios";
+import InputMask from "react-input-mask";
+import { useState } from "react";
 import { Step1Style } from "./Step1Style";
+import { AiOutlineEye } from "react-icons/ai";
+import { BsEyeSlash } from "react-icons/bs";
 
 const Step1 = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    name: false,
+    password: false,
+  });
+  const [obj, setObj] = useState({
+    name: "",
+    password: "",
+  });
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    let t = true,
+      err = {};
+    if (!obj.name) {
+      t = false;
+      err = { ...err, name: true };
+    }
+    if (!obj.password) {
+      t = false;
+      err = { ...err, password: true };
+    }
+    if (t) {
+      axios
+        .post("https://apiinson.yarbek.uz/api/v1/auth/login", {
+          name: obj.name,
+          password: obj.password,
+        })
+        .then((r) => {})
+        .catch((e) => {})
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+      setErrors(err);
+    }
+  };
   return (
     <>
       <Step1Style>
-        <div
-          class="chakra-modal__body css-qlig70"
-          id="chakra-modal--body-:r9s:"
-        >
-          <div class="sc-dAlyuH hGShBZ">
-            <div class="sc-jXbUNg duTnwm title">
-              <b>Tizimga</b> Kirish
-            </div>
-            <form class="form">
-              <label class="sc-imWYAI eGCxAi" for="name">
-                <div class="label">Telfon raqam</div>
-                <div class="i_target">
-                  <div class="input_body">
-                    <input placeholder="" name="name" value="" />
-                  </div>
-                </div>
-              </label>
-              <label class="sc-imWYAI eGCxAi" for="password">
-                <div class="label">Parol</div>
-                <div class="i_target">
-                  <div class="input_body">
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder=""
-                      value=""
-                    />
-                    <span class="show_icon">
-                      <svg
-                        stroke="currentColor"
-                        fill="currentColor"
-                        stroke-width="0"
-                        viewBox="0 0 1024 1024"
-                        height="1em"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d=""></path>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </label>
-              <div class="error_text"></div>
-              <div class="btns">
-                <button class="sc-dhKdcB htJRq">Kirish</button>
+        <div className="contenr">
+          <div class="chakra-modal__body">
+            <div class="sc-dAlyuH hGShBZ">
+              <div class="sc-jXbUNg_duTnwm_title">
+                <b>Tizimga</b> Kirish
               </div>
-            </form>
-            <div class="event">
-              <b>Ro'yxatdan</b> o'tish
-            </div>
-            <div class="event">
-              <b>Parolni</b> tiklash
+              <form class="form" onSubmit={onSubmit}>
+                <label class="sc-imWYAI_eGCxAi" for="name">
+                  <div class="label">Telfon raqam</div>
+                  <div class="i_target">
+                    <div class="input_body">
+                      <InputMask
+                        mask="+998(nn) nnn-nn-nn"
+                        placeholder=""
+                        name="name"
+                        formatChars={{
+                          n: "[0-9]",
+                          a: "[A-Za-z]",
+                          "*": "[A-Za-z0-9]",
+                        }}
+                        value={obj?.name}
+                        onChange={(e) => {
+                          setObj({ ...obj, name: e.target.value });
+                          setErrors({ ...errors, name: false });
+                        }}
+                      />
+                      {errors?.name ? (
+                        <div style={{ color: "red" }}>Tel nomer kiriting!</div>
+                      ) : null}
+                    </div>
+                  </div>
+                </label>
+                <label class="sc-imWYAI_eGCxAi" for="password">
+                  <div class="label">Parol</div>
+                  <div class="i_target">
+                    <div class="input_body">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder=""
+                        value={obj?.password}
+                        onChange={(e) => {
+                          setObj({ ...obj, password: e.target.value });
+                          setErrors({ ...errors, password: false });
+                        }}
+                      />
+
+                      <div>
+                        {showPassword ? (
+                          <div onClick={() => setShowPassword(false)}>
+                            <BsEyeSlash />
+                          </div>
+                        ) : (
+                          <div onClick={() => setShowPassword(true)}>
+                            <AiOutlineEye
+                              onClick={() => setShowPassword(true)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                      {errors?.password ? (
+                        <div style={{ color: "red" }}>Parolni kiriting!</div>
+                      ) : null}
+                      {/* <span class="show_icon">
+                        <svg
+                          stroke="currentColor"
+                          fill="currentColor"
+                          stroke-width="0"
+                          viewBox="0 0 1024 1024"
+                          height="1em"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d=""></path>
+                        </svg>
+                      </span> */}
+                    </div>
+                  </div>
+                </label>
+                {/* <div class="error_text"></div> */}
+                <div class="btns">
+                {loading ? (
+                    "Yuklanmoqda"
+                  ) : (
+                  <button class="sc-dhKdcB_htJRq">Kirish</button>
+                  )}
+                </div>
+              </form>
+              <div class="event">
+                <b>Ro'yxatdan</b> o'tish
+              </div>
+              <div class="event">
+                <b>Parolni</b> tiklash
+              </div>
             </div>
           </div>
         </div>
