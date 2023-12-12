@@ -61,7 +61,7 @@ const Step1 = () => {
                   <div class="i_target">
                     <div class="input_body">
                       <InputMask
-                        mask="+998(nn) nnn-nn-nn"
+                        mask="998nnnnnnnnn"
                         placeholder=""
                         name="name"
                         formatChars={{
