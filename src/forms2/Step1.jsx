@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Step1Style } from "./Step1Style";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+
 
 const Step1 = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +19,7 @@ const Step1 = () => {
     name: "",
     password: "",
   });
+  const navigate = useNavigate();
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,7 +39,9 @@ const Step1 = () => {
           name: obj.name,
           password: obj.password,
         })
-        .then((r) => {})
+        .then((r) => {
+          navigate("/Step2");
+        })
         .catch((e) => {})
         .finally(() => {
           setLoading(false);

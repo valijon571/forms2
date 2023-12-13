@@ -1,11 +1,13 @@
 import React from "react";
 import axios from "axios";
+import { ProfileContainer } from "../../styleComponents/components/profile_pages_style/ProfileStyle";
 import { useState } from "react";
 import InputMask from "react-input-mask";
 import { Step2Style } from "./Step2Style";
 
 const Step2 = () => {
   const [showPassword, setShowPassword] = useState(false);
+  // const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     name: false,
@@ -19,15 +21,15 @@ const Step2 = () => {
     foreign_doc_number_serial: false,
   });
   const [obj, setObj] = useState({
-      name: "",
-      first_name: "",
-      last_name: "",
-      middle_name: "",
-      birthday: "",
-      doc_type: "",
-      doc_number_serial: "",
-      doc_given: "",
-      foreign_doc_number_serial: "",
+    name: "",
+    first_name: "",
+    last_name: "",
+    middle_name: "",
+    birthday: "",
+    doc_type: "",
+    doc_number_serial: "",
+    doc_given: "",
+    foreign_doc_number_serial: "",
   });
   const onSubmit = (e) => {
     e.preventDefault();
@@ -109,21 +111,14 @@ const Step2 = () => {
                     <InputMask
                       placeholder=""
                       name="name"
-                      mask="+998(nn) nnn-nn-nn"
+                      mask="+998(nn)nnnnnnn"
                       // placeholder="+998"
                       formatChars={{
                         n: "[0-9]",
                         a: "[A-Za-z]",
                       }}
                       value={obj?.name}
-                      onChange={(e) => {
-                        setObj({ ...obj, name: e.target.value });
-                        setErrors({ ...errors, name: false });
-                      }}
                     />
-                    {errors?.name ? (
-                      <div style={{ color: "red" }}>Tel nomer kiriting!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
@@ -137,14 +132,7 @@ const Step2 = () => {
                       name="first_name"
                       placeholder=""
                       value={obj?.first_name}
-                      onChange={(e) => {
-                        setObj({ ...obj, first_name: e.target.value });
-                        setErrors({ ...errors, first_name: false });
-                      }}
                     />
-                    {errors?.first_name ? (
-                      <div style={{ color: "red" }}>Xatolik!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
@@ -157,14 +145,7 @@ const Step2 = () => {
                       name="last_name"
                       placeholder=""
                       value={obj?.last_name}
-                      onChange={(e) => {
-                        setObj({ ...obj, last_name: e.target.value });
-                        setErrors({ ...errors, last_name: false });
-                      }}
                     />
-                    {errors?.last_name ? (
-                      <div style={{ color: "red" }}>Xatolik!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
@@ -177,14 +158,7 @@ const Step2 = () => {
                       name="middle_name"
                       placeholder=""
                       value={obj?.middle_name}
-                      onChange={(e) => {
-                        setObj({ ...obj, middle_name: e.target.value });
-                        setErrors({ ...errors, middle_name: false });
-                      }}
                     />
-                    {errors?.middle_name ? (
-                      <div style={{ color: "red" }}>Xatolik!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
@@ -197,14 +171,7 @@ const Step2 = () => {
                       name="birthday"
                       placeholder=""
                       value={obj?.birthday}
-                      onChange={(e) => {
-                        setObj({ ...obj, birthday: e.target.value });
-                        setErrors({ ...errors, birthday: false });
-                      }}
                     />
-                    {errors?.birthday ? (
-                      <div style={{ color: "red" }}>Xatolik!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
@@ -231,17 +198,15 @@ const Step2 = () => {
                 <div className="i_target">
                   <div className="input_body">
                     <input
-                      placeholder="AA-1234567"
+                      mask="aa"
+                      placeholder="AA1234567"
                       name="doc_number_serial"
-                      value={obj?.doc_number_serial}
-                      onChange={(e) => {
-                        setObj({ ...obj, doc_number_serial: e.target.value });
-                        setErrors({ ...errors, doc_number_serial: false });
+                      formatChars={{
+                        a: "[A-Za-z]",
+                        "*": "[A-Za-z0-9]",
                       }}
+                      value={obj?.doc_number_serial}
                     />
-                    {errors?.doc_number_serial ? (
-                      <div style={{ color: "red" }}>Xatolik!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
@@ -254,14 +219,7 @@ const Step2 = () => {
                       name="doc_given"
                       placeholder=""
                       value={obj?.doc_given}
-                      onChange={(e) => {
-                        setObj({ ...obj, doc_given: e.target.value });
-                        setErrors({ ...errors, doc_given: false });
-                      }}
                     />
-                    {errors?.doc_given ? (
-                      <div style={{ color: "red" }}>Xatolik!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
@@ -274,20 +232,7 @@ const Step2 = () => {
                       name="foreign_doc_number_serial"
                       placeholder=""
                       value={obj?.foreign_doc_number_serial}
-                      onChange={(e) => {
-                        setObj({
-                          ...obj,
-                          foreign_doc_number_serial: e.target.value,
-                        });
-                        setErrors({
-                          ...errors,
-                          foreign_doc_number_serial: false,
-                        });
-                      }}
                     />
-                    {errors?.foreign_doc_number_serial ? (
-                      <div style={{ color: "red" }}>Xatolik!</div>
-                    ) : null}
                   </div>
                 </div>
               </label>
