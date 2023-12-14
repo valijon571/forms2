@@ -7,7 +7,6 @@ import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-
 const Step1 = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -40,6 +39,7 @@ const Step1 = () => {
           password: obj.password,
         })
         .then((r) => {
+          localStorage.setItem("token", r?.data?.access_token);
           navigate("/Step2");
         })
         .catch((e) => {})
@@ -74,6 +74,14 @@ const Step1 = () => {
                           a: "[A-Za-z]",
                           "*": "[A-Za-z0-9]",
                         }}
+                        // onChange={(e) => {
+                        //   setPdata({ ...pdata, [e.target.name]: e.target.value });
+                        //   setErrors({
+                        //     ...errors,
+                        //     [e.target.name]: false,
+                        //     common: "",
+                        //   });
+                        // }}
                         value={obj?.name}
                         onChange={(e) => {
                           setObj({ ...obj, name: e.target.value });
@@ -135,10 +143,10 @@ const Step1 = () => {
                 </label>
                 {/* <div class="error_text"></div> */}
                 <div class="btns">
-                {loading ? (
+                  {loading ? (
                     "Yuklanmoqda"
                   ) : (
-                  <button class="sc-dhKdcB_htJRq">Kirish</button>
+                    <button class="sc-dhKdcB_htJRq">Kirish</button>
                   )}
                 </div>
               </form>
