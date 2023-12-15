@@ -33,15 +33,15 @@ const Step2 = () => {
       .then((r) => {
         setStep(r.data);
         setFormData({
-          name: r.data?.data?.name || "",
-          first_name: r.data?.data?.first_name || "",
-          last_name: r.data?.data?.last_name || "",
-          middle_name: r.data?.data?.middle_name || "",
-          birthday: r.data?.data?.birthday || "",
-          doc_number_serial: r.data?.data?.doc_number_serial || "",
-          doc_given: r.data?.data?.doc_given || "",
+          name: r.data?.user?.name || "",
+          first_name: r.data?.user?.first_name || "",
+          last_name: r.data?.user?.last_name || "",
+          middle_name: r.data?.user?.middle_name || "",
+          birthday: r.data?.user?.birthday || "",
+          doc_number_serial: r.data?.user?.doc_number_serial || "",
+          doc_given: r.data?.user?.doc_given || "",
           foreign_doc_number_serial:
-            r.data?.data?.foreign_doc_number_serial || "",
+            r.data?.user?.foreign_doc_number_serial || "",
         });
       })
       .catch((e) => {})
@@ -64,95 +64,84 @@ const Step2 = () => {
       <Step2Style>
         <div className="content">
           <form onSubmit={onSubmit}>
-            {Step?.data?.map((item, index) => (
-              <div key={index} className="sc-klVQfs_bmxtkv" >
-                <>
-                  <div className="sc-jXbUNg_duTnwm">
-                    <b>Личные</b> данные
+            <div className="sc-klVQfs_bmxtkv">
+              <>
+                <div className="sc-jXbUNg_duTnwm">
+                  <b>Личные</b> данные
+                </div>
+
+                <label className="sc-imWYAI_eGCxAi">
+                  <div class="label">Контактный номер телефона</div>
+                  <div className="i_target">
+                    <div className="input_body_disabled">
+                      <InputMask
+                        placeholder=""
+                        name="name"
+                        mask="+998(nn) nnn-nn-nn"
+                        value={formData?.name}
+                        onChange={handleChange}
+                        // placeholder="+998"
+                        formatChars={{
+                          n: "[0-9]",
+                          a: "[A-Za-z]",
+                        }}
+                      />
+                    </div>
                   </div>
+                </label>
 
-                  <label className="sc-imWYAI_eGCxAi">
-                    <div class="label">Контактный номер телефона</div>
-                    <div className="i_target">
-                      <div className="input_body_disabled">
-                        <InputMask
-                          placeholder={item.placeholder}
-                          type={item.type}
-                          // is_disabled={true}
-                          // is_icon={false}
-                          name={item.name}
-                          mask="+998nnnnnnnnn"
-                          // placeholder="+998"
-                          formatChars={{
-                            n: "[0-9]",
-                            a: "[A-Za-z]",
-                          }}
-                          value={formData[item.name]}
-                          onChange={handleChange}
-                        />
-                      </div>
+                <label className="sc-imWYAI_eGCxAi">
+                  <div class="label">Фамилия</div>
+                  <div className="i_target">
+                    <div className="input_body">
+                      <input
+                        name="first_name"
+                        placeholder=""
+                        value={formData?.first_name}
+                      />
                     </div>
-                  </label>
-
-                  <label className="sc-imWYAI_eGCxAi">
-                    <div class="label">Фамилия</div>
-                    <div className="i_target">
-                      <div className="input_body">
-                        <input
-                          type={item.text}
-                          name={item.first_name}
-                          placeholder=""
-                          value={formData[item.first_name]}
-                          onChange={handleChange}
-                        />
-                      </div>
+                  </div>
+                </label>
+                <label className="sc-imWYAI_eGCxAi">
+                  <div class="label">Имя</div>
+                  <div className="i_target">
+                    <div className="input_body">
+                      <input
+                        name="first_name"
+                        placeholder=""
+                        value={formData?.first_name}
+                      />
                     </div>
-                  </label>
-                  <label className="sc-imWYAI_eGCxAi">
-                    <div class="label">Имя</div>
-                    <div className="i_target">
-                      <div className="input_body">
-                        <input
-                          type={item.text}
-                          name={item.last_name}
-                          placeholder=""
-                          value={formData[item.last_name]}
-                          onChange={handleChange}
-                        />
-                      </div>
+                  </div>
+                </label>
+                <label className="sc-imWYAI_eGCxAi">
+                  <div class="label">Отчество</div>
+                  <div className="i_target">
+                    <div className="input_body">
+                      <input
+                        type=""
+                        name="middle_name"
+                        placeholder=""
+                        value={formData?.middle_name}
+                      />
                     </div>
-                  </label>
-                  <label className="sc-imWYAI_eGCxAi">
-                    <div class="label">Отчество</div>
-                    <div className="i_target">
-                      <div className="input_body">
-                        <input
-                          type={item.text}
-                          name={item.middle_name}
-                          placeholder=""
-                          value={formData[item.middle_name]}
-                          onChange={handleChange}
-                        />
-                      </div>
+                  </div>
+                </label>
+                <label className="sc-imWYAI_eGCxAi">
+                  <div class="label">Дата рождения</div>
+                  <div className="i_target">
+                    <div className="input_body">
+                      <input
+                        type=""
+                        name="birthday"
+                        placeholder=""
+                        value={formData?.birthday}
+                      />
                     </div>
-                  </label>
-                  <label className="sc-imWYAI_eGCxAi">
-                    <div class="label">Дата рождения</div>
-                    <div className="i_target">
-                      <div className="input_body">
-                        <input
-                          type={item.text}
-                          name={item.birthday}
-                          placeholder=""
-                          value={formData[item.birthday]}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-                  </label>
-                </>
-              </div>
-            ))}
+                  </div>
+                </label>
+              </>
+            </div>
 
             <div className="sc-klVQfs_bmxtkv">
               <div className="sc-jXbUNg_duTnwm">
@@ -165,8 +154,7 @@ const Step2 = () => {
                     <select
                       placeholder="Passport"
                       name="doc_type"
-                      value={formData.doc_type}
-                      onChange={handleChange}
+                      value={formData?.doc_type}
                     >
                       <option hidden="">Passport</option>
                       {/* <option value="1">Passport</option> */}
@@ -187,8 +175,7 @@ const Step2 = () => {
                         a: "[A-Za-z]",
                         "*": "[A-Za-z0-9]",
                       }}
-                      value={formData.doc_number_serial}
-                      onChange={handleChange}
+                      value={formData?.doc_number_serial}
                     />
                   </div>
                 </div>
@@ -201,8 +188,7 @@ const Step2 = () => {
                       type="date"
                       name="doc_given"
                       placeholder=""
-                      value={formData.doc_given}
-                      onChange={handleChange}
+                      value={formData?.doc_given}
                     />
                   </div>
                 </div>
@@ -212,11 +198,10 @@ const Step2 = () => {
                 <div className="i_target">
                   <div className="input_body">
                     <input
-                      type="text"
+                      type=""
                       name="foreign_doc_number_serial"
                       placeholder=""
-                      value={formData.foreign_doc_number_serial}
-                      onChange={handleChange}
+                      value={formData?.foreign_doc_number_serial}
                     />
                   </div>
                 </div>
