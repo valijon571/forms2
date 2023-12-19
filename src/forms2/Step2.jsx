@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 
 const Step2 = () => {
   const [Step, setStep] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     first_name: "",
@@ -24,6 +26,7 @@ const Step2 = () => {
   }, []);
 
   const getStep = () => {
+    setLoading(true);
     axios
       .get("https://apiinson.yarbek.uz/api/v1/auth/me", {
         headers: {
@@ -38,6 +41,7 @@ const Step2 = () => {
           last_name: r.data?.user?.last_name || "",
           middle_name: r.data?.user?.middle_name || "",
           birthday: r.data?.user?.birthday || "",
+          doc_type: r.data?.user?.doc_type || "",
           doc_number_serial: r.data?.user?.doc_number_serial || "",
           doc_given: r.data?.user?.doc_given || "",
           foreign_doc_number_serial:
@@ -45,7 +49,83 @@ const Step2 = () => {
         });
       })
       .catch((e) => {})
-      .finally(() => {});
+      .finally(() => {
+        // setLoading(false);
+      });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    let t = true,
+      err = {};
+    if (!formData.name) {
+      t = false;
+      err = { ...err, name: true };
+    }
+    if (!formData.first_name) {
+      t = false;
+      err = { ...err, first_name: true };
+    }
+    if (!formData.last_name) {
+      t = false;
+      err = { ...err, last_name: true };
+    }
+    if (!formData.middle_name) {
+      t = false;
+      err = { ...err, middle_name: true };
+    }
+    if (!formData.birthday) {
+      t = false;
+      err = { ...err, birthday: true };
+    }
+    if (!formData.doc_type) {
+      t = false;
+      err = { ...err, doc_type: true };
+    }
+    if (!formData.doc_number_serial) {
+      t = false;
+      err = { ...err, doc_number_serial: true };
+    }
+    if (!formData.doc_given) {
+      t = false;
+      err = { ...err, doc_given: true };
+    }
+    if (!formData.foreign_doc_number_serial) {
+      t = false;
+      err = { ...err, foreign_doc_number_serial: true };
+    }
+    if (t) {
+      axios
+        .post("https://apiinson.yarbek.uz/api/v1/auth/profile", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((r) => {
+          setStep(r.data);
+          setFormData({
+            name: r.data?.user?.name || "",
+            first_name: r.data?.user?.first_name || "",
+            last_name: r.data?.user?.last_name || "",
+            middle_name: r.data?.user?.middle_name || "",
+            birthday: r.data?.user?.birthday || "",
+            doc_type: r.data?.user?.doc_type || "",
+            doc_number_serial: r.data?.user?.doc_number_serial || "",
+            doc_given: r.data?.user?.doc_given || "",
+            foreign_doc_number_serial:
+              r.data?.user?.foreign_doc_number_serial || "",
+          });
+        })
+        .catch((e) => {})
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+      setErrors(err);
+    }
   };
 
   const handleChange = (e) => {
@@ -54,11 +134,12 @@ const Step2 = () => {
       ...prevData,
       [name]: value,
     }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-  };
   return (
     <>
       <Step2Style>
@@ -79,7 +160,7 @@ const Step2 = () => {
                         name="name"
                         mask="+998(nn) nnn-nn-nn"
                         value={formData?.name}
-                        onChange={handleChange}
+                        // onChange={handleChange}
                         // placeholder="+998"
                         formatChars={{
                           n: "[0-9]",
@@ -98,7 +179,11 @@ const Step2 = () => {
                         name="first_name"
                         placeholder=""
                         value={formData?.first_name}
+                        onChange={handleChange}
                       />
+                      {errors.first_name && (
+                        <span className="error">{errors.first_name}</span>
+                      )}
                     </div>
                   </div>
                 </label>
@@ -107,10 +192,14 @@ const Step2 = () => {
                   <div className="i_target">
                     <div className="input_body">
                       <input
-                        name="first_name"
+                        name="last_name"
                         placeholder=""
-                        value={formData?.first_name}
+                        value={formData?.last_name}
+                        onChange={handleChange}
                       />
+                      {errors.last_name && (
+                        <span className="error">{errors.last_name}</span>
+                      )}
                     </div>
                   </div>
                 </label>
@@ -123,7 +212,11 @@ const Step2 = () => {
                         name="middle_name"
                         placeholder=""
                         value={formData?.middle_name}
+                        onChange={handleChange}
                       />
+                      {errors.middle_name && (
+                        <span className="error">{errors.middle_name}</span>
+                      )}
                     </div>
                   </div>
                 </label>
@@ -136,7 +229,11 @@ const Step2 = () => {
                         name="birthday"
                         placeholder=""
                         value={formData?.birthday}
+                        onChange={handleChange}
                       />
+                      {errors.birthday && (
+                        <span className="error">{errors.birthday}</span>
+                      )}
                     </div>
                   </div>
                 </label>
@@ -155,9 +252,13 @@ const Step2 = () => {
                       placeholder="Passport"
                       name="doc_type"
                       value={formData?.doc_type}
+                      onChange={handleChange}
                     >
+                      {errors.doc_type && (
+                        <span className="error">{errors.doc_type}</span>
+                      )}
                       <option hidden="">Passport</option>
-                      {/* <option value="1">Passport</option> */}
+                      <option value="1">Passport</option>
                       <option value="2">Id Card</option>
                     </select>
                   </div>
@@ -176,7 +277,11 @@ const Step2 = () => {
                         "*": "[A-Za-z0-9]",
                       }}
                       value={formData?.doc_number_serial}
+                      onChange={handleChange}
                     />
+                    {errors.doc_number_serial && (
+                      <span className="error">{errors.doc_number_serial}</span>
+                    )}
                   </div>
                 </div>
               </label>
@@ -189,7 +294,11 @@ const Step2 = () => {
                       name="doc_given"
                       placeholder=""
                       value={formData?.doc_given}
+                      onChange={handleChange}
                     />
+                    {errors.doc_given && (
+                      <span className="error">{errors.doc_given}</span>
+                    )}
                   </div>
                 </div>
               </label>
@@ -202,15 +311,25 @@ const Step2 = () => {
                       name="foreign_doc_number_serial"
                       placeholder=""
                       value={formData?.foreign_doc_number_serial}
+                      onChange={handleChange}
                     />
+                    {errors.foreign_doc_number_serial && (
+                      <span className="error">
+                        {errors.foreign_doc_number_serial}
+                      </span>
+                    )}
                   </div>
                 </div>
               </label>
             </div>
             <div class="btns">
+              {/* {loading ? (
+                "Yuklanmoqda"
+              ) : ( */}
               <button type="submit" class="sc-dhKdcB_htJRq">
-                Сохранить
+                {loading ? "Yuklanmoqda" : "Сохранить"}
               </button>
+              {/* )} */}
             </div>
           </form>
         </div>
